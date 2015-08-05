@@ -16,6 +16,13 @@ class SerialThread(Thread):
 
     def run(self):
         self.connect()
+        while (True):
+            send = False
+            if self.send:
+                self.send_lock.acquire()
+                to_send = self.send.pop(0)
+                self.send_lock.release()
+                send = True
 
     def connect(self):
         for port in comports():

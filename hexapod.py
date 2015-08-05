@@ -1,11 +1,12 @@
 from serial.tools.list_ports import comports
-from serial import Serial
+from serial import Serial, SerialException, SerialTimeoutException
 from leg import Leg
 
 
 BAUD_RATE = 9600
 
 
+# Thrown when a connection cannot be established
 class HexapodException(Exception):
     pass
 
@@ -13,7 +14,6 @@ class HexapodException(Exception):
 class Hexapod:
 
     def __init__(self):
-
         # Try to establish a serial connection
         self.serial = None
 
@@ -21,18 +21,17 @@ class Hexapod:
             try:
                 serial = Serial(port[1], BAUD_RATE, timeout=2)
                 serial.write('V\n')
+                if "SERVOTOR" in serial.readline():
+                    print("Connected on port {}", port)
+                    self.serial = serial
+                    self.serial.flush()
+                    break
             except ValueError:
                 print("A serial parameter is out of range")
             except SerialException:
-                print("{}: Serial device either cannot be found or be configured", port[1])
+                print("%s: Could not connect to serial device" % port[1])
             except SerialTimeoutException:
-                print("{}: Serial connection timed out while writing data", port[1])
-
-            if "SERVOTOR" in serial.readline():
-                print("Connected on port {}", port)
-                self.serial = serial
-                self.serial.flush()
-                break
+                print("%s: Serial device timed out while writing data" % port[1])
 
         if not self.serial:
             raise HexapodException
