@@ -19,7 +19,7 @@ class Hexapod:
 
         for port in comports():
             try:
-                serial = Serial(port[1], BAUD_RATE, timeout=2)
+                serial = Serial(port[1], BAUD_RATE, timeout=2, writeTimeout=2)
                 serial.write('V\n')
                 if "SERVOTOR" in serial.readline():
                     print("Connected on port {}", port)
@@ -43,3 +43,13 @@ class Hexapod:
         self.RF = Leg(self.serial, 24, 25, 26)
         self.RM = Leg(self.serial, 20, 21, 22)
         self.RB = Leg(self.serial, 16, 17, 18)
+        self.neck = Servo(self.serial, 31)
+
+        self.legs = [
+            self.LF, self.LM, self.LB,
+            self.RF, self.RM, self.RB
+        ]
+
+    def stand(self):
+        for leg in self.legs:
+            leg.stand()
