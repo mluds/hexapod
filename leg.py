@@ -1,4 +1,5 @@
 from servo import Servo
+from threading import Thread
 
 
 class Leg:
