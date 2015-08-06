@@ -1,11 +1,13 @@
 from serial import SerialTimeoutException
 
+
 class Servo:
-    def __init__(self, serial, id):
+    def __init__(self, serial, id, offset):
         self.serial = serial
         self.id = id
+        self.offset = offset
 
-    def set_angle(self, angle):
+    def move(self, angle):
         pass
 
     def deactivate(self):

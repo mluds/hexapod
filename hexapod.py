@@ -1,6 +1,7 @@
 from serial.tools.list_ports import comports
 from serial import Serial, SerialException, SerialTimeoutException
 from leg import Leg
+import logging as log
 
 
 BAUD_RATE = 9600
@@ -22,16 +23,16 @@ class Hexapod:
                 serial = Serial(port[1], BAUD_RATE, timeout=2, writeTimeout=2)
                 serial.write('V\n')
                 if "SERVOTOR" in serial.readline():
-                    print("Connected on port {}", port)
+                    log.info("%s: Connected" % port)
                     self.serial = serial
                     self.serial.flush()
                     break
             except ValueError:
-                print("A serial parameter is out of range")
+                log.warning("A serial parameter is out of range")
             except SerialException:
-                print("%s: Could not connect to serial device" % port[1])
+                log.warning("%s: Could not connect" % port[1])
             except SerialTimeoutException:
-                print("%s: Serial device timed out while writing data" % port[1])
+                log.warning("%s: Write timeout" % port[1])
 
         if not self.serial:
             raise HexapodException
@@ -50,6 +51,6 @@ class Hexapod:
             self.RF, self.RM, self.RB
         ]
 
-    def stand(self):
+    def lay(self):
         for leg in self.legs:
             leg.stand()
