@@ -12,6 +12,10 @@ class Leg:
             self.hip, self.knee, self.ankle
         ]
 
+    def center(self):
+        for j in self.joints:
+            j.set(0)
+
     def lay(self):
         threads = []
         for j in self.joints:

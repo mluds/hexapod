@@ -20,6 +20,9 @@ class Hexapod:
             self.RF, self.RM, self.RB
         ]
 
+        for leg in self.legs:
+            leg.center()
+
     def lay(self):
         threads = []
         for leg in self.legs:
