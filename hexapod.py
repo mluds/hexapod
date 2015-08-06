@@ -23,7 +23,7 @@ class Hexapod:
     def lay(self):
         threads = []
         for leg in self.legs:
-            threads.append(leg.stand())
+            threads.append(leg.lay())
         for t in threads:
             t.start()
         for t in threads:

@@ -12,7 +12,7 @@ class Leg:
             self.hip, self.knee, self.ankle
         ]
 
-    def stand(self):
+    def lay(self):
         threads = []
         for j in self.joints:
             threads.append(Thread(j.move(0)))
