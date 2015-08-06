@@ -1,5 +1,4 @@
-from hexapod import Hexapod
-from connection import ConnectionException
+from hexapod import Hexapod, ConnectionException
 import sys
 
 

@@ -1,5 +1,5 @@
-from connection import Connection
-from leg import Leg
+from .connection import Connection
+from .leg import Leg
 import logging as log
 
 

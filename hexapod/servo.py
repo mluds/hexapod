@@ -14,7 +14,7 @@ class Servo:
 
         if pos < 500:
             pos = 500
-        else if pos > 2500:
+        elif pos > 2500:
             pos = 2500
 
         self.conn.send("#%dP%.4dT0\r" % (self.id, pos))

@@ -1,4 +1,4 @@
-from servo import Servo
+from .servo import Servo
 from threading import Thread
 
 
