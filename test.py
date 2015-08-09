@@ -9,6 +9,6 @@ if __name__ == '__main__':
         print("Could not establish a connection")
         sys.exit(1)
 
-    hexapod.lay()
+    hexapod.walk()
 
     sys.exit(0)
