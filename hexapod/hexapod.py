@@ -5,6 +5,7 @@ import logging as log
 from threading import Thread
 import time
 
+
 class Hexapod:
     def __init__(self):
         conn = Connection()
@@ -30,23 +31,22 @@ class Hexapod:
             self.RM, self.LF, self.LB
         ]
 
-    def lay(self):
-        threads = []
-        for leg in self.legs:
-            threads.append(Thread(leg.lay()))
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
+        self.tripods = [
+            self.tripod1,
+            self.tripod2
+        ]
 
-    def stand(self, legs):
-        threads = []
-        for leg in legs:
-            threads.append(Thread(leg.stand()))
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
+    def deactivate(self):
+        for leg in self.legs:
+            leg.deactivate()
+
+    def zero(self):
+        for leg in self.legs:
+            leg.zero()
+
+    def stand(self):
+        for leg in self.legs:
+            leg.stand()
 
     def lift(self, legs, n):
         for leg in legs:
@@ -58,11 +58,12 @@ class Hexapod:
             leg.shift(n)
 
     def walk(self):
-        sl = 0.2
-        angle = 20
-        upangle = 20
-        downangle = 45
-        self.stand(self.legs)
+        sl = 0.5
+        angle = 25
+        upangle = -10
+        downangle = -45
+
+        self.stand()
         time.sleep(3)
 
         self.lift(self.tripod1, upangle)
@@ -70,23 +71,24 @@ class Hexapod:
         self.shift(self.tripod2, -angle)
         time.sleep(sl)
 
-        for i in range(0, 100):
-            self.lift(self.tripod1, downangle)
-            time.sleep(sl)
-            self.lift(self.tripod2, upangle)
-            time.sleep(sl)
+        for i in range(4):
+            for i in [0, 1]:
+                self.lift(self.tripods[i], downangle)
+                time.sleep(sl)
+                self.lift(self.tripods[1 - i], upangle)
+                time.sleep(sl)
 
-            self.shift(self.tripod2, angle)
-            time.sleep(sl)
-            self.shift(self.tripod1, -angle)
-            time.sleep(sl)
+                self.shift(self.tripods[1 - i], angle)
+                time.sleep(sl)
+                self.shift(self.tripods[i], -angle)
+                time.sleep(sl)
 
-            self.lift(self.tripod2, downangle)
-            time.sleep(sl)
-            self.lift(self.tripod1, upangle)
-            time.sleep(sl)
+            # self.lift(self.tripod2, downangle)
+            # time.sleep(sl)
+            # self.lift(self.tripod1, upangle)
+            # time.sleep(sl)
 
-            self.shift(self.tripod1, angle)
-            time.sleep(sl)
-            self.shift(self.tripod2, -angle)
-            time.sleep(sl)
+            # self.shift(self.tripod1, angle)
+            # time.sleep(sl)
+            # self.shift(self.tripod2, -angle)
+            # time.sleep(sl)

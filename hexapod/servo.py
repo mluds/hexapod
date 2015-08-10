@@ -4,60 +4,47 @@ import time
 from math import copysign
 
 
-INTERVAL = 100
+INTERVAL = 10
+ZERO_POSITION = 1500
 
 
 class Servo:
-    def __init__(self, conn, id, offset=0, flip=False):
-        self.conn = conn
+    def __init__(self, connection, id, offset=0, flip=False):
+        self.connection = connection
         self.id = id
-        self.offset = offset
-        self.pos = 1500
+        self.position = self.bound(ZERO_POSITION + offset)
         self.flip = flip
 
-    def round(self, x, base=5):
-        return int(base * round(float(x)/base))
+    def convert(self, angle):
+        if self.flip:
+            angle *= -1
+        return int(1500.0 + float(angle)*11.1111111)
 
-    def get_pos(self):
-        return self.round(self.pos + self.offset, INTERVAL)
-
-    def ang_to_pos(self, ang):
-        pos = int(1500.0 + float(ang)*11.1111111 + self.offset)
-
-        if pos < 500:
-            pos = 500
-        elif pos > 2500:
-            pos = 2500
-
-        return pos
+    def bound(self, position):
+        if position < 500:
+            return 500
+        elif position > 2500:
+             return 2500
+        return position
 
     def set(self, angle):
-        if self.flip:
-            angle *= -1
-        pos = self.ang_to_pos(angle)
-        self.conn.ser.write("#%dP%.4dT0\r" % (self.id, pos))
-        self.pos = pos
+        pos = self.convert(angle)
+        self.connection.set(self.id, pos)
+        self.position = pos
 
     def move(self, angle):
-        start = self.get_pos()
-        if self.flip:
-            angle *= -1
-        finish = self.ang_to_pos(angle)
+        start = self.position
+        finish = self.convert(angle)
         step = int(copysign(INTERVAL, finish-start))
-        steps = range(start, finish, step)
+        steps = range(start + step, finish, step)
         steps.append(finish)
-        self.conn.lock.acquire()
         print("ID: " + str(self.id))
         print("Start: " + str(start))
         print("Finish: " + str(finish))
         print("Steps: " + str(steps))
-        self.conn.lock.release()
         for i in steps:
-            self.conn.send("#%dP%.4dT0\r" % (self.id, i))
-            #time.sleep(0.01)
+            self.connection.set(self.id, i)
+        self.position = i
 
     def deactivate(self):
-        try:
-            self.conn.send("#%dL\r" % self.id)
-        except SerialTimeoutException:
-            log.error("Servo %d: Write timeout" % self.id)
+        self.connection.deactivate(self.id)

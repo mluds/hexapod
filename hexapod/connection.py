@@ -1,5 +1,5 @@
-import serial.tools.list_ports
-import serial
+from serial.tools.list_ports import comports
+from serial import Serial
 from threading import Lock
 import logging as log
 
@@ -13,67 +13,28 @@ class ConnectionException(Exception):
 
 class Connection:
     def __init__(self):
+        self.serial = None
 
-        self.ser = None
+        for port in comports():
+            try:
+                serial = Serial(port[0], baudrate=BAUD_RATE, timeout=2)
+                serial.write('V\n')
+                result = serial.readline()
+                print result
+                if "SERVOTOR" in result:
+                    print "Connect Successful! Connected on port:", port
+                    self.serial = serial
+                    self.serial.flush()
+                    break
+            except Exception as e:
+                    print type(e)
+                    print e.args
 
-        comList = []
-        comports = serial.tools.list_ports.comports()
-        for comport in comports:
-                for thing in comport:
-                        #print thing
-                        comList.append(thing)
-        
-        comList = list(set(comList))
-        print "Attempting to connect to Servotor"
-        for port in comList:
-                try:
-                        ser = serial.Serial(port, baudrate= BAUD_RATE, timeout=2)
-                        ser.write('V\n')
-                        result = ser.readline()
-                        if "SERVOTOR" in result:
-                                print "Connect Successful! Connected on port:",port
-                                self.ser = ser
-                                self.ser.flush()
-                                self.serOpen = True
-                                self.serNum = 1
-                                break
-                except:
-                        pass
-        if self.serOpen == False:
-            print "Trying Windows Method"
-            for i in range(1,100):
-                try:
-                    try:
-                        ser = serial.Serial(i, baudrate=BAUD_RATE, timeout=1)
-                        #print "ser",i
-                    except:
-                        #print "ser",i,"failed"
-                        raise Exception
-                    ser.flush()
-                    time.sleep(0.1)
-                    ser.write("V\n")
-                    time.sleep(1)
-                    readReply = ser.readline()
-                    #print "read:",readReply
-                    if "SERVOTOR" in readReply:
-                        print "Connect Successful! Connected on port COM"+str(i+1)
-                        ser.flush()
-                        self.ser = ser
-                        self.serNum = i
-                        self.serOpen = True
-                        break
-                    else:
-                        ser.close()
-                        pass
-                except:
-                    pass
-
-        if not self.ser:
+        if not self.serial:
             raise ConnectionException
 
-        self.lock = Lock()
+    def deactivate(self, servo_id):
+        self.serial.write("#%dL\r" % servo_id)
 
-    def send(self, data):
-        self.lock.acquire()
-        self.ser.write(data)
-        self.lock.release()
+    def set(self, servo_id, position):
+        self.serial.write("#%dP%.4dT0\r" % (servo_id, position))
