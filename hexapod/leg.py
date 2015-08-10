@@ -37,10 +37,10 @@ class Leg:
 
     def lift(self, n):
         #self.hip.set(self.hip.pos)
-        self.knee.set(n)
+        self.knee.move(n)
         #self.ankle.set(self.ankle.pos)
 
     def shift(self, n):
-        self.hip.set(n)
+        self.hip.move(n)
         #self.knee.set(self.ankle.pos)
         #self.ankle.set(self.ankle.pos)

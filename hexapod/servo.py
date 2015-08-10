@@ -35,7 +35,7 @@ class Servo:
         if self.flip:
             angle *= -1
         pos = self.ang_to_pos(angle)
-        self.conn.send("#%dP%.4dT0\r" % (self.id, pos))
+        self.conn.ser.write("#%dP%.4dT0\r" % (self.id, pos))
         self.pos = pos
 
     def move(self, angle):
