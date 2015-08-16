@@ -1,6 +1,5 @@
 from serial.tools.list_ports import comports
 from serial import Serial
-from threading import Lock
 import logging as log
 
 

@@ -1,5 +1,5 @@
 from .servo import Servo
-from threading import Thread
+from .movement import Movement
 
 
 class Leg:
@@ -18,15 +18,11 @@ class Leg:
 
     def zero(self):
         for j in self.joints:
-            j.move(0)
+            j.set(0)
 
     def stand(self):
-        self.hip.move(0)
-        self.knee.move(-45)
-        self.ankle.move(-45)
-
-    def lift(self, n):
-        self.knee.move(n)
-
-    def shift(self, n):
-        self.hip.move(n)
+        return [
+            Movement(self.hip, 0),
+            Movement(self.knee, -45),
+            Movement(self.ankle, -45)
+        ]

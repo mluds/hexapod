@@ -1,10 +1,7 @@
-from serial import SerialTimeoutException
-import logging as log
-import time
 from math import copysign
 
 
-INTERVAL = 10
+INTERVAL = 100
 ZERO_POSITION = 1500
 MAX_POSITION = 2500
 MIN_POSITION = 500
