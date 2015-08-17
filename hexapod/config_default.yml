@@ -1,0 +1,87 @@
+servos:
+    interval: 100
+    zero_position: 1500
+    max_position: 2500
+    min_position: 500
+
+legs:
+    left:
+        front:
+            hip:
+                id: 7
+                offset: 0
+                invert: True
+            knee:
+                id: 6
+                offset: 0
+                invert: False
+            ankle:
+                id: 5
+                offset: 0
+                invert: False
+        middle:
+            hip:
+                id: 11
+                offset: 0
+                invert: True
+            knee:
+                id: 10
+                offset: 0
+                invert: False
+            ankle:
+                id: 9
+                offset: 0
+                invert: False
+        back:
+            hip:
+                id: 15
+                offset: 0
+                invert: True
+            knee:
+                id: 14
+                offset: 0
+                invert: False
+            ankle:
+                id: 13
+                offset: 0
+                invert: False
+    right:
+        front:
+            hip:
+                id: 24
+                offset: 0
+                invert: False
+            knee:
+                id: 25
+                offset: 0
+                invert: False
+            ankle:
+                id: 26
+                offset: 0
+                invert: False
+        middle:
+            hip:
+                id: 20
+                offset: 0
+                invert: False
+            knee:
+                id: 21
+                offset: 0
+                invert: False
+            ankle:
+                id: 22
+                offset: 0
+                invert: False
+        back:
+            hip:
+                id: 16
+                offset: 0
+                invert: False
+            knee:
+                id: 17
+                offset: 0
+                invert: False
+            ankle:
+                id: 18
+                offset: 0
+                invert: False

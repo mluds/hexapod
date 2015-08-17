@@ -8,5 +8,6 @@ setup(
     author='Michael Ludwig',
     author_email='mluds@ymail.com',
     packages=find_packages(),
-    install_requires=['pyserial']
+    install_requires=['pyserial', 'PyYaml'],
+    include_package_data=True
 )
