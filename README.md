@@ -1,5 +1,7 @@
 ## Python Interface for the ArcBotics Hexy Robot
 
+[![Build Status](https://travis-ci.org/mluds/hexapod.svg?branch=master)](https://travis-ci.org/mluds/hexapod)
+
 `hexapod` interacts with the [Hexy robot from Arcbotics](http://arcbotics.com/products/hexy/).
 
 ### Setup and Installation
