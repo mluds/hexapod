@@ -1,5 +1,5 @@
 from serial.tools.list_ports import comports
-from serial import Serial
+from serial import Serial, SerialException
 import logging as log
 
 
@@ -19,15 +19,13 @@ class Connection:
                 serial = Serial(port[0], baudrate=BAUD_RATE, timeout=2)
                 serial.write('V\n')
                 result = serial.readline()
-                print result
                 if "SERVOTOR" in result:
-                    print "Connect Successful! Connected on port:", port
+                    log.info("Connected on port: %s" % port[0])
+                    serial.flush()
                     self.serial = serial
-                    self.serial.flush()
                     break
-            except Exception as e:
-                    print type(e)
-                    print e.args
+            except SerialException:
+                log.warning("Could not connect on port: %s" % port[0])
 
         if not self.serial:
             raise ConnectionException
