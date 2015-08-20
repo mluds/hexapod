@@ -1,9 +1,10 @@
-from hexapod import Hexapod, ConnectionException
+from .hexapod import Hexapod
+from .connection import ConnectionException
 import sys
 import time
 
 
-if __name__ == '__main__':
+def test():
     try:
         hexapod = Hexapod()
     except ConnectionException:

@@ -3,6 +3,7 @@ from .servo import Servo
 from .leg import Leg
 from .mover import Mover
 from .movement import Movement
+from .config import config
 import time
 
 

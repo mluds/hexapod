@@ -1,17 +1,7 @@
-import yaml
+import lya
 from os.path import expanduser
+import sys
 
 
-def _merge(default, update):
-    pass
-
-
-def _load_config():
-    config = {}
-    with open('config_default.yml') as default:
-        with open(expanduser('~/.hexapod.yml')) as user:
-            config = _merge(default, user)
-    return config
-
-
-config = _load_config()
+config = lya.AttrDict.from_yaml('config_default.yml')
+config.update_yaml(expanduser('~/.hexapod.yml'))

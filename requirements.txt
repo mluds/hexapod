@@ -1,2 +1,3 @@
 pyserial
-PyYaml
+layered-yaml-attrdict-config
+
