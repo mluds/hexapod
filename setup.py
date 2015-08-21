@@ -16,7 +16,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'hexapod-test=hexapod.test:test'
+            'hexapod-test=hexapod.test:run'
         ]
     }
 )

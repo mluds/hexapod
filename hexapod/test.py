@@ -4,7 +4,7 @@ import sys
 import time
 
 
-def test():
+def run():
     try:
         hexapod = Hexapod()
     except ConnectionException:
