@@ -9,6 +9,7 @@ import time
 
 class Hexapod:
     def __init__(self):
+        print(config.legs.left.middle)
         conn = Connection()
 
         self.LF = Leg(conn, 7, 6, 5, -50, -50, -50, True)

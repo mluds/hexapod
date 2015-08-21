@@ -9,6 +9,7 @@ setup(
     author_email='mluds@ymail.com',
     packages=find_packages(),
     install_requires=[
+        'setuptools',
         'pyserial',
         'layered-yaml-attrdict-config'
     ],
